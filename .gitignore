@@ -30,7 +30,7 @@ wheels/
 *.pyc
 *.pyo
 *.pyd
-*.sqlite3
+*.db.sqlite3
 *.coverage
 *.cover
 .coverage.*
@@ -83,47 +83,3 @@ venv.bak/
 
 
 
-# Others
-*.swp
-*.swo
-*~
-.project
-.pydevproject
-.venv/
-
-# Local settings
-local_settings.py
-
-# Flask stuff:
-instance/
-.webassets-cache
-
-# pyenv
-.python-version
-
-# celery beat schedule file
-celerybeat-schedule
-celerybeat.pid
-
-# SageMath parsed files
-*.sage.py
-
-# Environments
-.env
-.venv
-env/
-venv/
-ENV/
-env.bak/
-venv.bak/
-
-# mkdocs documentation
-/site
-
-# mypy
-.mypy_cache/
-.dmypy.json
-dmypy.json
-
-# Pyre type checker
-.pyre/
