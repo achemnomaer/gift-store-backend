@@ -37,14 +37,7 @@ wheels/
 .cache
 .pytest_cache/
 
-# Django migrations
-**/migrations/*
-!**/migrations/__init__.py
 
-# Django static files
-staticfiles/
-static/
-media/
 
 # Unit test / coverage reports
 htmlcov/
