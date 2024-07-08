@@ -134,6 +134,9 @@ STATICFILES_DIRS = (
 )
 
 MEDIA_URL = '/media/'
+
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+
 MEDIA_DIR = join(BASE_DIR, 'media')
 MEDIA_ROOT = MEDIA_DIR
 
@@ -200,3 +203,8 @@ CHECKOUT_SUCCESS_URL = os.getenv('CHECKOUT_SUCCESS_URL')
 CHECKOUT_FAILED_URL = os.getenv('CHECKOUT_FAILED_URL')
 
 
+CLOUDINARY_STORAGE = {
+    'CLOUD_NAME': os.getenv("CLOUDINARY_CLOUD_NAME"),
+    'API_KEY': os.getenv("CLOUDINARY_API_KEY"),
+    'API_SECRET': os.getenv("CLOUDINARY_API_SECRET"),
+}
