@@ -1,5 +1,3 @@
-
-
 import os
 from datetime import timedelta
 from os.path import join
@@ -12,13 +10,11 @@ load_dotenv()
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
 SECRET_KEY = os.getenv('DJANGO_SECRET_KEY')
 
-DEBUG = os.getenv('DEBUG')
+DEBUG = os.getenv('DEBUG', 'False') == 'True'
 
-ALLOWED_HOSTS = []
-
+ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '').split(',')
 
 # Application definition
 
@@ -55,7 +51,6 @@ INSTALLED_APPS = [
     'payment'
 ]
 
-
 MIDDLEWARE = [
     "corsheaders.middleware.CorsMiddleware",
     'django.middleware.security.SecurityMiddleware',
@@ -66,9 +61,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    
 ]
-
 
 ROOT_URLCONF = 'backend.urls'
 
@@ -90,17 +83,12 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'backend.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+    'default': dj_database_url.config(default=os.getenv('DATABASE_URL'))
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
@@ -120,7 +108,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
 
@@ -132,25 +119,20 @@ USE_I18N = True
 
 USE_TZ = True
 
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
+
 STATIC_URL = 'static/'
-
 STATIC_ROOT = join(BASE_DIR, 'staticfiles')
-
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
-
 
 STATICFILES_DIRS = (
     join(BASE_DIR, 'static'),
 )
 
 MEDIA_URL = '/media/'
-
 MEDIA_DIR = join(BASE_DIR, 'media')
-
 MEDIA_ROOT = MEDIA_DIR
 
 # Default primary key field type
@@ -158,9 +140,7 @@ MEDIA_ROOT = MEDIA_DIR
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-
 # Jwt and rest framework settings start
-
 
 SIMPLE_JWT = {
     "ACCESS_TOKEN_LIFETIME": timedelta(minutes=60),
@@ -168,10 +148,9 @@ SIMPLE_JWT = {
     "ROTATE_REFRESH_TOKENS": False,
     "BLACKLIST_AFTER_ROTATION": False,
     "UPDATE_LAST_LOGIN": True,
-    "SIGNING_KEY": "complexsigningkey",  # generate a key and replace me
+    "SIGNING_KEY": os.getenv('SIGNING_KEY'),  # generate a key and replace me
     "ALGORITHM": "HS512",
 }
-
 
 # External settings
 SITE_ID = 1
@@ -191,7 +170,6 @@ REST_FRAMEWORK = {
 }
 # Jwt and rest framework settings end
 
-
 REST_AUTH = {
     "USE_JWT": True,
     "JWT_AUTH_HTTPONLY": False,
@@ -203,26 +181,19 @@ CORS_ALLOW_HEADERS = [
     # Add other headers as needed
 ]
 
-
 if DEBUG:
     CORS_ALLOW_ALL_ORIGINS = True
 else:
-    CORS_ALLOWED_ORIGINS = [
-        "http://localhost:3000/",
-        "http://127.0.0.1:3000/",
-    ]
+    CORS_ALLOWED_ORIGINS = os.getenv('CORS_ALLOWED_ORIGINS', '').split(',')
 
 
 
 
-
-
-#stripe
+# Stripe configuration
 STRIPE_SECRET_KEY = os.getenv('STRIPE_SECRET_KEY')
 STRIPE_WEBHOOK_SECRET = os.getenv('STRIPE_WEBHOOK_SECRET')
 
-
-#front-end URL's
+# Front-end URLs
 CHECKOUT_SUCCESS_URL = os.getenv('CHECKOUT_SUCCESS_URL')
 CHECKOUT_FAILED_URL = os.getenv('CHECKOUT_FAILED_URL')
 
